@@ -10,6 +10,9 @@ import padlockSvg from "./assets/padlock.svg";
 import cwSvg from "./assets/cw.svg";
 import Footer from "./components/footer/Footer";
 import axios from "axios";
+import SweetAlert from "sweetalert-react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { Toaster, toast } from "alert";
 
 const url = "https://randomuser.me/api/";
 const defaultImage = "https://randomuser.me/api/portraits/men/75.jpg";
@@ -19,6 +22,8 @@ function App() {
   const { picture, name, email } = user;
   const [text, setText] = useState(`${name?.first} ${name?.last}`);
   const [title, setTitle] = useState("My name is");
+  const [data, setData] = useState([]);
+  const [show, setShow] = useState(false);
   function getUser() {
     axios(url)
       .then((res) => {
@@ -26,33 +31,59 @@ function App() {
       })
       .catch((err) => console.log(err));
   }
+
   useEffect(() => {
-    setText(name?.first);
-  }, [name?.first]);
+    setText(`${name?.first} ${name?.last}`);
+    setTitle("My name is");
+  }, [`${name?.first} ${name?.last}`]);
   useEffect(() => {
     getUser();
   }, []);
 
+  const handleAdd = () => {
+    const isUserExists = data.find((item) => item.email === email);
+    if (!isUserExists) {
+      setShow(true);
+      toast.success("You added a new item.");
+
+      setData([
+        ...data,
+        {
+          firstName: `${name?.first} ${name?.last}`,
+          email: email,
+          phone: user.phone,
+          age: user.dob?.age,
+        },
+      ]);
+    } else {
+      toast.error("You can't add the same user again.");
+    }
+  };
+
   return (
     <main>
-      <div className="block bcg-orange">
-        <img src={cwSvg} alt="cw" id="cw" />
+      <div className="block bcg-orange ">
+        <img className="brand-img" src={cwSvg} alt="cw" id="cw" />
       </div>
-      <div className="block">
-        <div className="container">
+      <div className="block ">
+        <div className="container ">
           <img src={picture?.large} alt="random user" className="user-img" />
           <p className="user-title">{title}</p>
           <p className="user-value">{text}</p>
           <div className="values-list">
             <button
               onMouseOver={() => {
-                setText(`${name?.first} ${name?.last}`);
+                setText(`${name?.title}. ${name?.first} ${name?.last}`);
                 setTitle("My name is");
               }}
               className="icon"
               data-label="name"
             >
-              <img src={womanSvg} alt="user" id="iconImg" />
+              <img
+                src={user.gender == "male" ? manSvg : womanSvg}
+                alt="user"
+                id="iconImg"
+              />
             </button>
 
             <button
@@ -65,16 +96,50 @@ function App() {
             >
               <img src={mailSvg} alt="mail" id="iconImg" />
             </button>
-            <button className="icon" data-label="age">
-              <img src={womanAgeSvg} alt="age" id="iconImg" />
+            <button
+              onMouseOver={() => {
+                setText(`${user.dob?.age} `);
+                setTitle("My age is");
+              }}
+              className="icon"
+              data-label="age"
+            >
+              <img
+                src={user.gender == "male" ? manAgeSvg : womanAgeSvg}
+                alt="age"
+                id="iconImg"
+              />
             </button>
-            <button className="icon" data-label="street">
+            <button
+              onMouseOver={() => {
+                setText(`${user.location?.city} / ${user.location?.country} `);
+                setTitle("My address is");
+              }}
+              className="icon"
+              data-label="street"
+            >
               <img src={mapSvg} alt="map" id="iconImg" />
             </button>
-            <button className="icon" data-label="phone">
+            <button
+              onMouseOver={() => {
+                setText(`${user.phone}  `);
+                setTitle("My phone is");
+              }}
+              className="icon"
+              data-label="phone"
+            >
               <img src={phoneSvg} alt="phone" id="iconImg" />
             </button>
-            <button className="icon" data-label="password">
+            <button
+              onMouseOver={() => {
+                setText(
+                  `${user?.login?.username} / ${user?.login?.password}  `
+                );
+                setTitle("My username / password is");
+              }}
+              className="icon"
+              data-label="password"
+            >
               <img src={padlockSvg} alt="lock" id="iconImg" />
             </button>
           </div>
@@ -82,10 +147,23 @@ function App() {
             <button onClick={getUser} className="btn" type="button">
               new user
             </button>
-            <button className="btn" type="button">
+            <button
+              onClick={() => {
+                handleAdd();
+              }}
+              className="btn"
+              type="button"
+            >
               add user
             </button>
           </div>
+          <>
+            <Toaster
+              style={{ backgroundColor: "red", fontSize: "3rem" }}
+              className="text-danger"
+              position="top-center"
+            />
+          </>
 
           <table className="table">
             <thead>
@@ -97,7 +175,14 @@ function App() {
               </tr>
             </thead>
             <tbody>
-              <tr className="body-tr"></tr>
+              {data.map((item, i) => (
+                <tr key={i} className="body-tr">
+                  <td>{item.firstName}</td>
+                  <td>{item.email}</td>
+                  <td>{item.phone}</td>
+                  <td>{item.age}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

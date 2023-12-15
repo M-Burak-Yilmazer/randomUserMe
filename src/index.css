@@ -62,7 +62,7 @@ Global Styles
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  background: var(--clr-grey-10);
+  background: #ffc8dd;
   color: var(--clr-grey-1);
   line-height: 1.5;
   font-size: 0.875rem;
@@ -112,7 +112,7 @@ p {
   min-height: 40vh;
 }
 .bcg-orange {
-  background: var(--clr-orange-cw);
+  background: #ffafcc;
   text-align: center;
 }
 
@@ -120,10 +120,10 @@ p {
   width: 90vw;
   min-width: 300px;
   max-width: 730px;
-  background: var(--clr-white);
+  background: #a2d2ff;
   margin: 0 auto;
   margin-top: -200px;
-  border-radius: var(--radius);
+  border-radius: 50px 50px 50px 50px;
   position: relative;
   text-align: center;
   padding: 1.5rem;
@@ -137,9 +137,9 @@ p {
   left: 0;
   width: 100%;
   height: 130px;
-  background: var(--clr-grey-10);
-  border-top-left-radius: var(--radius);
-  border-top-right-radius: var(--radius);
+  background: #bde0fe;
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.25);
 }
 .container img {
@@ -149,7 +149,7 @@ p {
   border-radius: 50%;
   padding: 5px;
   background: var(--clr-white);
-  border: 1px solid rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(50, 150, 50, 0.25);
   margin-bottom: 2rem;
   box-shadow: var(--dark-shadow);
 }
@@ -182,7 +182,7 @@ p {
 
 .btn {
   margin: 0 auto;
-  margin-top: 1.5rem;
+
   width: 150px;
 }
 
@@ -217,12 +217,21 @@ p {
 
 .body-tr {
   height: 40px;
+  color: #003049;
+  font-weight: 500;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-.load{
+.load {
   font-size: 5rem;
   position: absolute;
   top: 50%;
-  left:50%;
+  left: 50%;
   transform: translate(-50%, -50%);
+}
+.brand-img {
+  position: absolute;
+  left: 10px;
+  top: -40px;
+  z-index: 99;
 }

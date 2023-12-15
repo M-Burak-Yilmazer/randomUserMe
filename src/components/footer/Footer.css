@@ -1,9 +1,9 @@
 .footer-div {
-  width: 80vw;
-  min-width: 400px;
+  width: 60vw;
+  min-width: 300px;
   background-color: White;
   height: 50px;
-  font-size: 2rem;
+  font-size: 1.3rem;
   color: #9d4d8c;
   border: 0.5px solid #9d4d8c;
   border-radius: 5px;
@@ -11,10 +11,12 @@
   height: 55px;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .brand {
   color: grey;
   font-weight: bold;
   margin-right: 1.5rem;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }

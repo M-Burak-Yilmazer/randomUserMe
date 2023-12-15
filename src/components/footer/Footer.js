@@ -4,7 +4,7 @@ import designSvg from "../../assets/design.svg";
 
 const Footer = () => {
   return (
-    <div className="footer-div">
+    <div className="footer-div d-flex justify-content-center align-items-center">
       <a
         href="https://github.com/anthonyharold67"
         target="_blank"
