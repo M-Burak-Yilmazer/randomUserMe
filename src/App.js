@@ -12,7 +12,9 @@ import Footer from "./components/footer/Footer";
 import axios from "axios";
 import SweetAlert from "sweetalert-react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { Toaster, toast } from "alert";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const url = "https://randomuser.me/api/";
 const defaultImage = "https://randomuser.me/api/portraits/men/75.jpg";
@@ -22,8 +24,13 @@ function App() {
   const { picture, name, email } = user;
   const [text, setText] = useState(`${name?.first} ${name?.last}`);
   const [title, setTitle] = useState("My name is");
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(() => {
+    const storedData = localStorage.getItem("userData");
+    return storedData ? JSON.parse(storedData) : [];
+  });
   const [show, setShow] = useState(false);
+  const notify = () => toast("Wow so easy!");
+
   function getUser() {
     axios(url)
       .then((res) => {
@@ -36,6 +43,12 @@ function App() {
     setText(`${name?.first} ${name?.last}`);
     setTitle("My name is");
   }, [`${name?.first} ${name?.last}`]);
+
+  useEffect(() => {
+    // Save data to local storage whenever it changes
+    localStorage.setItem("userData", JSON.stringify(data));
+  }, [data]);
+
   useEffect(() => {
     getUser();
   }, []);
@@ -44,7 +57,16 @@ function App() {
     const isUserExists = data.find((item) => item.email === email);
     if (!isUserExists) {
       setShow(true);
-      toast.success("You added a new item.");
+      toast.success("You added a new user!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
 
       setData([
         ...data,
@@ -56,7 +78,16 @@ function App() {
         },
       ]);
     } else {
-      toast.error("You can't add the same user again.");
+      toast.error("You can't add the same user again.", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -158,10 +189,17 @@ function App() {
             </button>
           </div>
           <>
-            <Toaster
-              style={{ backgroundColor: "red", fontSize: "3rem" }}
-              className="text-danger"
+            <ToastContainer
               position="top-center"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
             />
           </>
 
