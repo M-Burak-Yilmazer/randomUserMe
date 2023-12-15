@@ -38,6 +38,19 @@ function App() {
       })
       .catch((err) => console.log(err));
   }
+  function clearAll() {
+    setData([]);
+    toast.warn("You deleted all the user", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+  }
 
   useEffect(() => {
     setText(`${name?.first} ${name?.last}`);
@@ -177,6 +190,9 @@ function App() {
           <div className="btn-group">
             <button onClick={getUser} className="btn" type="button">
               new user
+            </button>
+            <button onClick={clearAll} className="btn" type="button">
+              Clear All
             </button>
             <button
               onClick={() => {
